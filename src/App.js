@@ -267,8 +267,8 @@ export default function App() {
   const fetchAccounts = useCallback(async () => {
     if (!isConfigured) return;
     setLoading(true);
-    try {
-      const res = await fetch(SHEET_URL + "?t=" + Date.now(), { method: "GET", redirect: "follow" });
+ try {
+      const res = await fetch(SHEET_URL + "?t=" + Date.now());
       const text = await res.text();
       const data = JSON.parse(text);
       setAccounts(Array.isArray(data) ? data : []);
@@ -285,10 +285,11 @@ export default function App() {
   const saveAccount = useCallback(async (acc) => {
     if (!isConfigured) return;
     setSaving(true);
-    try {
+try {
       await fetch(SHEET_URL, {
-        method:"POST",
-        redirect:"follow",
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({ action:"save", account:{ ...acc, updatedAt: new Date().toLocaleString() } }),
       });
       showToast("Saved to Google Sheets ✓", "success");
