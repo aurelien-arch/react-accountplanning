@@ -104,7 +104,7 @@ const MEDDIC = [
 ];
 const ROLE_ICONS = { "Economic Buyer":"💰","Champion":"🏆","Influencer":"💡","End User":"👤","Blocker":"🚫","Technical Buyer":"🔧" };
 const REL_COLORS = { "❄️ Cold":"#bfdbfe","🌤 Warm":"#fde68a","🔥 Advocate":"#bbf7d0","⚠️ Blocker":"#fecaca" };
-const TEAM = ["Carlos","Frédéric","Dorothée","Martin","Mélanie","Loïc","Tristan","Geoffray","Johanna","Estelle","Taoufik"];
+const TEAM = ["Carlos","Frédéric","Dorothée","Martin","Mélanie","Loïc","Tristan","Geoffray","Johanna","Estelle","Taoufik","Aurélien"];
 
 const blankAccount = (rep="") => ({
   id: Date.now().toString(),
