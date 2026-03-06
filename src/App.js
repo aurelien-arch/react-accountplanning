@@ -104,7 +104,7 @@ const MEDDIC = [
 ];
 const ROLE_ICONS = { "Economic Buyer":"💰","Champion":"🏆","Influencer":"💡","End User":"👤","Blocker":"🚫","Technical Buyer":"🔧" };
 const REL_COLORS = { "❄️ Cold":"#bfdbfe","🌤 Warm":"#fde68a","🔥 Advocate":"#bbf7d0","⚠️ Blocker":"#fecaca" };
-const TEAM = ["Carlos","Frédéric","Dorothée","Martin","Mélanie","Loïc","Tristan","Geoffray","Johanna","Estelle","Taoufik","Aurélien"];
+const TEAM = ["Alex","Jordan","Morgan","Casey","Riley","Sam","Taylor","Jamie","Drew","Robin","Quinn","Avery","Blake","Cameron","Dakota"];
 
 const blankAccount = (rep="") => ({
   id: Date.now().toString(),
@@ -264,32 +264,33 @@ export default function App() {
   };
 
   /* ── FETCH ALL ACCOUNTS ── */
-const fetchAccounts = useCallback(async () => {
-  if (!isConfigured) return;
-  setLoading(true);
-  try {
-    const res = await fetch(SHEET_URL + "?t=" + Date.now(), {
-      method: "GET",
-      redirect: "follow",
-    });
-    const text = await res.text();
-    const data = JSON.parse(text);
-    setAccounts(Array.isArray(data) ? data : []);
-    if (data.length > 0 && !activeId) setActiveId(data[0].id);
-  } catch(e) {
-    showToast("Could not load accounts from Google Sheets", "error");
-  }
-  setLoading(false);
-}, [isConfigured, activeId]);
+  const fetchAccounts = useCallback(async () => {
+    if (!isConfigured) return;
+    setLoading(true);
+    try {
+      const res = await fetch(SHEET_URL + "?t=" + Date.now(), { method: "GET", redirect: "follow" });
+      const text = await res.text();
+      const data = JSON.parse(text);
+      setAccounts(Array.isArray(data) ? data : []);
+      if (data.length > 0 && !activeId) setActiveId(data[0].id);
+    } catch(e) {
+      showToast("Could not load accounts from Google Sheets", "error");
+    }
+    setLoading(false);
+  }, [isConfigured, activeId]);
 
   useEffect(() => { if (isConfigured && repSet) fetchAccounts(); }, [isConfigured, repSet]);
 
   /* ── AUTO-SAVE ── */
-await fetch(SHEET_URL, {
-  method: "POST",
-  redirect: "follow",
-  body: JSON.stringify({ action:"save", account:{ ...acc, updatedAt: new Date().toLocaleString() } }),
-});
+  const saveAccount = useCallback(async (acc) => {
+    if (!isConfigured) return;
+    setSaving(true);
+    try {
+      await fetch(SHEET_URL, {
+        method:"POST",
+        redirect:"follow",
+        body: JSON.stringify({ action:"save", account:{ ...acc, updatedAt: new Date().toLocaleString() } }),
+      });
       showToast("Saved to Google Sheets ✓", "success");
     } catch(e) {
       showToast("Save failed — check your connection", "error");
