@@ -69,7 +69,7 @@ function doGet(e) {
 */
 
 // ─── PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE ───────────
-const SHEET_URL = "https://script.google.com/a/macros/indeed.com/s/AKfycbwgrKmmh45boATut-3T3VOTzGHqpof5-3x4_nujiXNo37PPFOxGYRPuXmWdNrNuwA7U/exec";
+const SHEET_URL = "https://script.google.com/a/macros/indeed.com/s/AKfycbz7WDXEFux8CAxIcdId3eBV2MuMpjhX9FutT63LGmLjgCHMKPzfJ6Ao8bM4v5tebbW3/exec";
 // ───────────────────────────────────────────────────────────────
 
 const STAGES = [
