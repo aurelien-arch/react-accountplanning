@@ -264,31 +264,32 @@ export default function App() {
   };
 
   /* ── FETCH ALL ACCOUNTS ── */
-  const fetchAccounts = useCallback(async () => {
-    if (!isConfigured) return;
-    setLoading(true);
-    try {
-      const res = await fetch(SHEET_URL);
-      const data = await res.json();
-      setAccounts(Array.isArray(data) ? data : []);
-      if (data.length > 0 && !activeId) setActiveId(data[0].id);
-    } catch(e) {
-      showToast("Could not load accounts from Google Sheets", "error");
-    }
-    setLoading(false);
-  }, [isConfigured, activeId]);
+const fetchAccounts = useCallback(async () => {
+  if (!isConfigured) return;
+  setLoading(true);
+  try {
+    const res = await fetch(SHEET_URL + "?t=" + Date.now(), {
+      method: "GET",
+      redirect: "follow",
+    });
+    const text = await res.text();
+    const data = JSON.parse(text);
+    setAccounts(Array.isArray(data) ? data : []);
+    if (data.length > 0 && !activeId) setActiveId(data[0].id);
+  } catch(e) {
+    showToast("Could not load accounts from Google Sheets", "error");
+  }
+  setLoading(false);
+}, [isConfigured, activeId]);
 
   useEffect(() => { if (isConfigured && repSet) fetchAccounts(); }, [isConfigured, repSet]);
 
   /* ── AUTO-SAVE ── */
-  const saveAccount = useCallback(async (acc) => {
-    if (!isConfigured) return;
-    setSaving(true);
-    try {
-      await fetch(SHEET_URL, {
-        method:"POST",
-        body: JSON.stringify({ action:"save", account:{ ...acc, updatedAt: new Date().toLocaleString() } }),
-      });
+await fetch(SHEET_URL, {
+  method: "POST",
+  redirect: "follow",
+  body: JSON.stringify({ action:"save", account:{ ...acc, updatedAt: new Date().toLocaleString() } }),
+});
       showToast("Saved to Google Sheets ✓", "success");
     } catch(e) {
       showToast("Save failed — check your connection", "error");
